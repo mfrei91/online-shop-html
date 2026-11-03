@@ -15,6 +15,7 @@
     const LS_USERS = "karmakiosk.users";
     const LS_OFFERS = "karmakiosk.offers";
     const LS_SESSION = "karmakiosk.session";
+    const LS_CART = "karmakiosk.cart";
 
     function read(key, fallback) {
         try {
@@ -84,6 +85,55 @@
         return users().find(function (u) { return u.id === s.id; }) || null;
     }
 
+    function cart() {
+        const stored = read(LS_CART, []);
+        const all = offers();
+        return stored
+            .map(function (entry) {
+                const offer = all.find(function (o) { return o.id === entry.id; });
+                return { id: entry.id, qty: entry.qty, offer: offer || null };
+            })
+            .filter(function (entry) { return entry.offer && entry.offer.active; });
+    }
+
+    function saveCartIds(list) {
+        write(LS_CART, list.map(function (entry) { return { id: entry.id, qty: entry.qty }; }));
+    }
+
+    function addToCart(offerId) {
+        const stored = read(LS_CART, []);
+        const entry = stored.find(function (e) { return e.id === offerId; });
+        if (entry) {
+            entry.qty += 1;
+        } else {
+            stored.push({ id: offerId, qty: 1 });
+        }
+        write(LS_CART, stored);
+        updateCartCounts();
+    }
+
+    function setCartQty(offerId, qty) {
+        let stored = read(LS_CART, []);
+        const entry = stored.find(function (e) { return e.id === offerId; });
+        if (!entry) return;
+        if (qty <= 0) {
+            stored = stored.filter(function (e) { return e.id !== offerId; });
+        } else {
+            entry.qty = qty;
+        }
+        write(LS_CART, stored);
+    }
+
+    function cartCount() {
+        return read(LS_CART, []).reduce(function (sum, e) { return sum + e.qty; }, 0);
+    }
+
+    function updateCartCounts() {
+        document.querySelectorAll(".cart-count").forEach(function (el) {
+            el.textContent = cartCount();
+        });
+    }
+
     function login(username, password) {
         const user = users().find(function (u) { return u.username === username; });
         if (!user || user.password !== hashPassword(password)) return null;
@@ -147,7 +197,7 @@
             "<p>" + escapeHtml(offer.description) + "</p>" +
             '<div class="offer-footer">' +
             '<span class="price">' + priceDisplay(offer.price) + "</span>" +
-            '<a class="btn btn-small" href="#">In den Warenkorb 🧺</a>' +
+            '<button class="btn btn-small" data-add="' + offer.id + '">In den Warenkorb 🧺</button>' +
             "</div></div></article>";
     }
 
@@ -182,6 +232,18 @@
                 renderIndex();
             });
         }
+        const grid = document.getElementById("offer-grid");
+        const popularGrid = document.getElementById("popular-grid");
+        [grid, popularGrid].forEach(function (container) {
+            if (!container) return;
+            container.addEventListener("click", function (e) {
+                const btn = e.target.closest("[data-add]");
+                if (!btn) return;
+                addToCart(parseInt(btn.getAttribute("data-add"), 10));
+                btn.textContent = "Hinzugefügt ✓";
+                setTimeout(function () { btn.textContent = "In den Warenkorb 🧺"; }, 1200);
+            });
+        });
         renderIndex();
     }
 
@@ -198,6 +260,11 @@
         register: register,
         logout: logout,
         hashPassword: hashPassword,
+        cart: cart,
+        addToCart: addToCart,
+        setCartQty: setCartQty,
+        cartCount: cartCount,
+        updateCartCounts: updateCartCounts,
         updateNav: updateNav,
         renderIndex: renderIndex,
         initIndex: initIndex,
@@ -206,5 +273,6 @@
     };
 
     updateNav();
+    updateCartCounts();
     initIndex();
 })();

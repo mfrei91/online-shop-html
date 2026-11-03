@@ -6,13 +6,16 @@ Onlineshop für digitale Downloads (Kartenlegungen • Zauber • Rituale) als r
 
 ## Funktionen
 
+- **Warenkorb (`warenkorb.html`):** Artikel mit Mengen-Steuerung, Summen und Gesamtsumme; live mit den Angeboten verknüpft (neue Angebote erscheinen sofort, entfernte/inaktive werden automatisch ausgeblendet)
+- **Zahlungsanbieter:** in der reinen HTML-Version nicht direkt angebunden – Schritt-für-Schritt-Anleitung in `docs/ZAHLUNGSANBIETER.md` (PayPal-Buttons, E-Mail/Überweisung, Stripe/Mollie mit Backend)
+- **Cheat Sheet Forgejo-Upload:** `docs/FORGEJO-CHEATSHEET.md`
 - **Impressum (`impressum.html`) & Datenschutz (`datenschutz.html`):** eigene Sektionen mit Mustertexten (vor Veröffentlichung ersetzen)
 - **Shop (`index.html`):** Angebote als Rechteck-Kacheln, Kategorien-Filter (Kartenlegungen, Zauber, Rituale), „Beliebte Artikel"
 - **Login (`login.html`) / Registrierung (`register.html`):** clientseitig simuliert, Daten liegen im `localStorage` des Browsers
   - Admin-Demo-Zugang: `admin` / `karmakiosk123`
 - **Admin-Bereich (`admin.html`):** nur für die Rolle „admin" sichtbar
   - **Angebote:** hinzufügen, bearbeiten, entfernen, „beliebt" markieren, aktiv/inaktiv schalten
-  - **Benutzer:** auflisten, Rollen (user/admin) ändern, löschen (Selbstschutz für das eigene Konto)
+  - **Benutzer:** auflisten, Rollen (user/admin) ändern, löschen (Selbstschutz für das eigene Konto) und **Passwörter zurücksetzen** (keine Passwort-Anzeige; Admin vergibt ein neues Passwort)
 - Änderungen im Admin-Bereich erscheinen sofort im Shop; alle Daten bleiben im Browser gespeichert
 
 ## Nutzung

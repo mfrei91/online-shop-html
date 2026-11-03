@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warenkorb – KarmaKiosk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wood-bg">
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-moon">🌙</span>
+                <div>
+                    <h1>KarmaKiosk</h1>
+                    <p class="tagline">Warenkorb</p>
+                </div>
+            </div>
+            <nav class="user-nav">
+                <a class="btn btn-small" href="index.html">← Zum Shop</a>
+                <a class="btn btn-small" href="warenkorb.html">🧺 Warenkorb (<span class="cart-count">0</span>)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <h2>🧺 Dein Warenkorb</h2>
+
+            <div class="admin-table-wrap card">
+                <table class="admin-table" id="cart-table">
+                    <thead>
+                        <tr><th>Artikel</th><th>Kategorie</th><th>Preis</th><th>Anzahl</th><th>Summe</th><th></th></tr>
+                    </thead>
+                    <tbody id="cart-tbody"></tbody>
+                </table>
+            </div>
+
+            <p class="empty" id="cart-empty" style="display:none">
+                Dein Warenkorb ist leer. 🌱 <a href="index.html">Jetzt Angebote entdecken</a>
+            </p>
+
+            <div class="cart-summary card" id="cart-summary" style="display:none">
+                <p class="cart-total">Gesamtsumme: <strong id="cart-total">0,00 €</strong></p>
+                <div class="form-actions">
+                    <button class="btn" id="checkout-btn">Zur Kasse →</button>
+                </div>
+                <p class="small-text" id="checkout-info">
+                    ℹ️ Zahlungsanbieter (z. B. PayPal, Stripe, Mollie) sind in der reinen HTML-Version
+                    nicht direkt angebunden – eine Schritt-für-Schritt-Anleitung findest du in
+                    <a href="docs/ZAHLUNGSANBIETER.md" target="_blank">docs/ZAHLUNGSANBIETER.md</a>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>🌙 KarmaKiosk · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+    </footer>
+</div>
+<script src="js/shop.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>

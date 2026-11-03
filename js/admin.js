@@ -79,13 +79,14 @@
             const roleBtn = self
                 ? '<button class="btn btn-small" disabled title="Du kannst dir nicht selbst die Admin-Rolle entziehen">Rolle</button>'
                 : '<button class="btn btn-small" data-role="' + u.id + '">' + (u.role === "admin" ? "Zu Benutzer" : "Zu Admin") + "</button>";
+            const resetBtn = '<button class="btn btn-small" data-resetpw="' + u.id + '">🔑 Passwort zurücksetzen</button>';
             const delBtn = self
                 ? '<button class="btn btn-small btn-danger" disabled title="Du kannst dein eigenes Konto nicht löschen">Löschen</button>'
                 : '<button class="btn btn-small btn-danger" data-del="' + u.id + '">Löschen</button>';
             return "<tr><td>" + Shop.escapeHtml(u.username) + "</td>" +
                 "<td>" + Shop.escapeHtml(u.email) + "</td>" +
                 "<td>" + role + "</td>" +
-                '<td class="actions">' + roleBtn + delBtn + "</td></tr>";
+                '<td class="actions">' + roleBtn + resetBtn + delBtn + "</td></tr>";
         }).join("");
         tbody.innerHTML = rows;
         tbody.querySelectorAll("[data-role]").forEach(function (btn) {
@@ -98,6 +99,23 @@
                     Shop.saveUsers(list);
                     renderUsers();
                 }
+            });
+        });
+        tbody.querySelectorAll("[data-resetpw]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                const id = parseInt(btn.getAttribute("data-resetpw"), 10);
+                const list = Shop.users();
+                const u = list.find(function (x) { return x.id === id; });
+                if (!u) return;
+                const pw = prompt("Neues Passwort für „" + u.username + "“ (min. 6 Zeichen):");
+                if (pw === null) return;
+                if (pw.length < 6) {
+                    alert("Das Passwort muss mindestens 6 Zeichen haben.");
+                    return;
+                }
+                u.password = Shop.hashPassword(pw);
+                Shop.saveUsers(list);
+                alert("✅ Passwort für „" + u.username + "“ wurde zurückgesetzt.");
             });
         });
         tbody.querySelectorAll("[data-del]").forEach(function (btn) {
