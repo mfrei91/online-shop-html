@@ -219,7 +219,6 @@
     }
 
     function doSaveOffer() {
-        e.preventDefault();
         const list = Shop.offers();
         const id = document.getElementById("offer-id").value;
         const data = {
