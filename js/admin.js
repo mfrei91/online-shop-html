@@ -12,6 +12,40 @@
         return true;
     }
 
+    let currentImage = null;
+
+    function resizeImage(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const img = new Image();
+            img.onload = function () {
+                const max = 800;
+                let w = img.width, h = img.height;
+                if (w > max || h > max) {
+                    if (w > h) { h = Math.round(h * max / w); w = max; }
+                    else { w = Math.round(w * max / h); h = max; }
+                }
+                const canvas = document.createElement("canvas");
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+                callback(canvas.toDataURL("image/jpeg", 0.85));
+            };
+            img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function showImagePreview(dataUrl) {
+        const wrap = document.getElementById("image-preview");
+        if (dataUrl) {
+            document.getElementById("image-preview-img").src = dataUrl;
+            wrap.style.display = "";
+        } else {
+            wrap.style.display = "none";
+        }
+    }
+
     function parsePrice(value) {
         const n = parseFloat(String(value).replace(",", ".").replace("€", "").trim());
         return isNaN(n) ? 0 : Math.round(n * 100) / 100;
@@ -23,7 +57,7 @@
             const status =
                 '<span class="badge ' + (o.active ? "badge-green" : "badge-gray") + '">' + (o.active ? "aktiv" : "inaktiv") + "</span>" +
                 (o.popular ? ' <span class="badge badge-orange">beliebt</span>' : "");
-            return "<tr><td>" + Shop.escapeHtml(o.emoji) + " " + Shop.escapeHtml(o.title) + "</td>" +
+            return "<tr><td>" + Shop.escapeHtml(o.emoji) + " " + Shop.escapeHtml(o.title) + (o.image ? " 🖼️" : "") + "</td>" +
                 "<td>" + Shop.escapeHtml(o.category) + "</td>" +
                 "<td>" + Shop.priceDisplay(o.price) + "</td>" +
                 "<td>" + status + "</td>" +
@@ -87,6 +121,8 @@
         document.getElementById("offer-form-title").textContent = "Neues Angebot";
         document.getElementById("offer-emoji").value = "🔮";
         document.getElementById("offer-active").checked = true;
+        currentImage = null;
+        showImagePreview(null);
 
         if (offerId) {
             const o = Shop.offers().find(function (x) { return x.id === offerId; });
@@ -100,6 +136,8 @@
             document.getElementById("offer-emoji").value = o.emoji;
             document.getElementById("offer-popular").checked = o.popular;
             document.getElementById("offer-active").checked = o.active;
+            currentImage = o.image || null;
+            showImagePreview(currentImage);
             document.getElementById("offer-delete").style.display = "";
         }
         document.getElementById("offer-form-card").style.display = "";
@@ -107,6 +145,20 @@
     }
 
     function saveOffer(e) {
+        e.preventDefault();
+        const imageInput = document.getElementById("offer-image");
+        if (imageInput.files && imageInput.files[0]) {
+            resizeImage(imageInput.files[0], function (dataUrl) {
+                currentImage = dataUrl;
+                imageInput.value = "";
+                doSaveOffer();
+            });
+        } else {
+            doSaveOffer();
+        }
+    }
+
+    function doSaveOffer() {
         e.preventDefault();
         const list = Shop.offers();
         const id = document.getElementById("offer-id").value;
@@ -117,7 +169,8 @@
             category: document.getElementById("offer-category").value,
             emoji: document.getElementById("offer-emoji").value.trim() || "🔮",
             popular: document.getElementById("offer-popular").checked,
-            active: document.getElementById("offer-active").checked
+            active: document.getElementById("offer-active").checked,
+            image: currentImage
         };
         if (!data.title) {
             alert("Bitte einen Titel angeben.");
@@ -164,6 +217,21 @@
     }
 
     if (!guard()) return;
+
+    document.getElementById("offer-image").addEventListener("change", function () {
+        const f = this.files && this.files[0];
+        if (!f) return;
+        const self = this;
+        resizeImage(f, function (dataUrl) {
+            currentImage = dataUrl;
+            showImagePreview(dataUrl);
+            self.value = "";
+        });
+    });
+    document.getElementById("image-remove").addEventListener("click", function () {
+        currentImage = null;
+        showImagePreview(null);
+    });
 
     document.getElementById("btn-new-offer").addEventListener("click", function () { openOfferForm(null); });
     document.getElementById("offer-form").addEventListener("submit", saveOffer);

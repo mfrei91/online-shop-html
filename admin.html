@@ -72,6 +72,12 @@
                                 <label class="check"><input type="checkbox" id="offer-popular"> Als „beliebt“ markieren</label>
                                 <label class="check"><input type="checkbox" id="offer-active" checked> Im Shop sichtbar</label>
                             </div>
+                            <label for="offer-image">Bild (optional)</label>
+                            <input type="file" id="offer-image" accept="image/*">
+                            <div class="image-preview" id="image-preview" style="display:none">
+                                <img id="image-preview-img" alt="Vorschau">
+                                <button type="button" class="btn btn-small btn-danger" id="image-remove">Bild entfernen</button>
+                            </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn">Speichern</button>
                                 <button type="button" class="btn btn-outline" id="offer-cancel">Abbrechen</button>
@@ -103,6 +109,10 @@
             </div>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <p>🌙 KarmaKiosk · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+    </footer>
 </div>
 <script src="js/shop.js"></script>
 <script src="js/admin.js"></script>

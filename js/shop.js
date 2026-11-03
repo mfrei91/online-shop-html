@@ -136,8 +136,11 @@
     }
 
     function offerCard(offer) {
+        const imageHtml = offer.image
+            ? '<div class="offer-image"><img src="' + offer.image + '" alt="' + escapeHtml(offer.title) + '"></div>'
+            : '<div class="offer-image offer-image--' + offer.category + '">' + escapeHtml(offer.emoji) + "</div>";
         return '<article class="offer-card">' +
-            '<div class="offer-image offer-image--' + offer.category + '">' + escapeHtml(offer.emoji) + "</div>" +
+            imageHtml +
             '<div class="offer-body">' +
             '<span class="offer-category">' + escapeHtml(offer.category) + "</span>" +
             "<h3>" + escapeHtml(offer.title) + "</h3>" +

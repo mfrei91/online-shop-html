@@ -1,11 +1,12 @@
 # KarmaKiosk 🌙 (Statische HTML-Version)
 
-Onlineshop für digitale Downloads (Kartenlegungen • Zauber • Rituale) als reine HTML/CSS/JS-Website – ganz ohne Server. Design und Aufbau orientieren sich am Screenshot: warme Holz-/Erdtöne, Bewertung 4,9 ★ (328 Bewertungen), Angebote als Rechteck-Kacheln.
+Onlineshop für digitale Downloads (Kartenlegungen • Zauber • Rituale) als reine HTML/CSS/JS-Website – ganz ohne Server. Design und Aufbau orientieren sich am Screenshot: warme Holz-/Erdtöne, Angebote als Rechteck-Kacheln.
 
 > Die Flask-Vollstack-Version mit echter Server-Logik liegt in einem separaten Repository: [online-shop](https://github.com/mfrei91/online-shop)
 
 ## Funktionen
 
+- **Impressum (`impressum.html`) & Datenschutz (`datenschutz.html`):** eigene Sektionen mit Mustertexten (vor Veröffentlichung ersetzen)
 - **Shop (`index.html`):** Angebote als Rechteck-Kacheln, Kategorien-Filter (Kartenlegungen, Zauber, Rituale), „Beliebte Artikel"
 - **Login (`login.html`) / Registrierung (`register.html`):** clientseitig simuliert, Daten liegen im `localStorage` des Browsers
   - Admin-Demo-Zugang: `admin` / `karmakiosk123`
