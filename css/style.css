@@ -154,7 +154,7 @@ main { display: block; }
 
 form label { display: block; margin: 14px 0 6px; font-size: 14px; color: var(--wood); }
 form input[type="text"], form input[type="password"], form input[type="email"],
-form select, form textarea {
+form input[type="number"], form select, form textarea {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #d9c29a;
@@ -163,7 +163,7 @@ form select, form textarea {
     font-family: inherit;
     font-size: 15px;
 }
-form .btn[type="submit"] { margin-top: 18px; width: 100%; }
+.auth-card form .btn[type="submit"] { margin-top: 18px; width: 100%; }
 .auth-hint { text-align: center; font-size: 14px; color: var(--muted); margin-bottom: 0; }
 .auth-hint a { color: var(--accent-dark); }
 
@@ -189,7 +189,8 @@ form .btn[type="submit"] { margin-top: 18px; width: 100%; }
 .form-checks { margin-top: 14px; display: flex; gap: 22px; }
 .check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--wood); }
 .check input { width: auto; }
-.form-actions { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
+.form-actions { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+#offer-form-actions { border-top: 1px solid #eadbc2; padding-top: 16px; }
 
 .empty { color: var(--muted); font-style: italic; }
 

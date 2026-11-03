@@ -201,7 +201,8 @@
             document.getElementById("offer-delete").style.display = "";
         }
         document.getElementById("offer-form-card").style.display = "";
-        document.getElementById("offer-form-card").scrollIntoView({ behavior: "smooth" });
+        const actions = document.getElementById("offer-form-actions");
+        (actions || document.getElementById("offer-form-card")).scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function saveOffer(e) {
