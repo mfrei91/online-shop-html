@@ -16,17 +16,141 @@
 
 body {
     margin: 0;
+    padding: 0;
+
     font-family: Georgia, "Times New Roman", serif;
     color: var(--text);
-    background: linear-gradient(160deg, #5c3d22 0%, #7a5230 45%, #6b4423 100%);
+
+    background-color: #1b0b04;
+
+    background-image:
+        url("../images/wood-background.webp");
+
+    background-position: center top;
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+
     min-height: 100vh;
 }
 
 .wood-bg { max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; }
 
 .karmakiosk-header {
-    width: 100%;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    padding: 0;
     overflow: hidden;
+    background-color: #1b0b04;
+    line-height: 0;
+}
+
+.karmakiosk-header img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.karmakiosk-navigation {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+
+    padding: 14px 25px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #71370f,
+            #351605,
+            #572609
+        );
+
+    border-top: 3px solid #b9782e;
+    border-bottom: 3px solid #b9782e;
+
+    box-shadow: 0 5px 14px rgba(0,0,0,0.6);
+
+    box-sizing: border-box;
+}
+
+.karmakiosk-navigation a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 55px;
+    padding: 10px;
+
+    color: #ffe5ad;
+    text-decoration: none;
+    text-align: center;
+
+    font-family: Georgia, serif;
+    font-size: clamp(14px, 1.5vw, 20px);
+
+    background: linear-gradient(
+        #71370f,
+        #351605,
+        #572609
+    );
+
+    border: 1px solid #e3a34e;
+    border-radius: 13px;
+
+    box-shadow:
+        inset 0 1px 5px rgba(255,207,123,0.3),
+        0 3px 7px rgba(0,0,0,0.5);
+
+    transition: 0.2s ease;
+}
+
+.karmakiosk-navigation a span {
+    color: #ffd27d;
+    font-size: 1.4em;
+}
+
+.karmakiosk-navigation a:hover {
+    background: linear-gradient(
+        #98501b,
+        #542308,
+        #78380c
+    );
+
+    transform: translateY(-2px);
+}
+
+.karmakiosk-navigation a.active {
+    background: linear-gradient(
+        #b9782e,
+        #71370f,
+        #98501b
+    );
+    border-color: #ffd27d;
+}
+
+@media (max-width: 640px) {
+
+    .karmakiosk-navigation {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .karmakiosk-navigation a {
+        min-height: 48px;
+        font-size: 14px;
+        padding: 8px 4px;
+    }
+
 }
 
 .karmakiosk-header img {
@@ -83,7 +207,11 @@ main { display: block; }
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 20px;
+    justify-content: center;
+    justify-items: center;
 }
+
+.offer-grid .offer-card { width: 100%; }
 
 .offer-card {
     background: var(--card);

@@ -9,23 +9,11 @@
 <body>
 <div class="wood-bg">
     <header class="karmakiosk-header">
-        <a href="index.html">
-            <picture>
-                <source
-                    srcset="images/karmakiosk-header.webp 641w,
-                            images/karmakiosk-header@2x.webp 1282w"
-                    sizes="100vw"
-                    type="image/webp">
-
-                <img
-                    src="images/karmakiosk-header.png"
-                    srcset="images/karmakiosk-header.png 641w,
-                            images/karmakiosk-header@2x.png 1282w"
-                    sizes="100vw"
-                    alt="KarmaKiosk – Digitale Downloads"
-                    width="641"
-                    height="175">
-            </picture>
+        <a href="index.html" aria-label="KarmaKiosk Startseite">
+            <img
+                src="images/karmakiosk-header.jpg"
+                alt="KarmaKiosk – Digitale Downloads"
+            >
         </a>
     </header>
     <nav class="user-nav">
@@ -33,8 +21,6 @@
                 <a class="btn btn-small" href="index.html">← Zum Shop</a>
                 <button class="btn btn-small btn-outline" id="nav-logout" onclick="Shop.logout()">Abmelden</button>
             </nav>
-        </div>
-    </header>
 
     <main>
         <section class="section">

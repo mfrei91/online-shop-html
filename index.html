@@ -9,46 +9,39 @@
 <body>
 <div class="wood-bg">
     <header class="karmakiosk-header">
-        <a href="index.html">
-            <picture>
-                <source
-                    srcset="images/karmakiosk-header.webp 641w,
-                            images/karmakiosk-header@2x.webp 1282w"
-                    sizes="100vw"
-                    type="image/webp">
-
-                <img
-                    src="images/karmakiosk-header.png"
-                    srcset="images/karmakiosk-header.png 641w,
-                            images/karmakiosk-header@2x.png 1282w"
-                    sizes="100vw"
-                    alt="KarmaKiosk – Digitale Downloads"
-                    width="641"
-                    height="175">
-            </picture>
+        <a href="index.html" aria-label="KarmaKiosk Startseite">
+            <img
+                src="images/karmakiosk-header.jpg"
+                alt="KarmaKiosk – Digitale Downloads"
+            >
         </a>
     </header>
+
+    <nav class="karmakiosk-navigation">
+        <a href="#alle-angebote" data-cat="" class="active">
+            <span>✦</span> Alle Angebote
+        </a>
+        <a href="#kartenlegungen" data-cat="Kartenlegungen">
+            <span>☾</span> Kartenlegungen
+        </a>
+        <a href="#zauber" data-cat="Zauber">
+            <span>✧</span> Zauber
+        </a>
+        <a href="#rituale" data-cat="Rituale">
+            <span>❋</span> Rituale
+        </a>
+    </nav>
+
     <nav class="user-nav">
-                <a class="btn btn-small" href="warenkorb.html">🧺 Warenkorb (<span class="cart-count">0</span>)</a>
-                <a class="btn btn-small" href="login.html" id="nav-login">Anmelden</a>
-                <a class="btn btn-small btn-outline" href="register.html" id="nav-register">Registrieren</a>
-                <a class="btn btn-small" href="admin.html" id="nav-admin" style="display:none">⚙️ Admin</a>
-                <span class="user-badge" id="nav-user" style="display:none"></span>
-                <button class="btn btn-small btn-outline" id="nav-logout" style="display:none">Abmelden</button>
-            </nav>
-        </div>
-    </header>
+        <a class="btn btn-small" href="warenkorb.html">🧺 Warenkorb (<span class="cart-count">0</span>)</a>
+        <a class="btn btn-small" href="login.html" id="nav-login">Anmelden</a>
+        <a class="btn btn-small btn-outline" href="register.html" id="nav-register">Registrieren</a>
+        <a class="btn btn-small" href="admin.html" id="nav-admin" style="display:none">⚙️ Admin</a>
+        <span class="user-badge" id="nav-user" style="display:none"></span>
+        <button class="btn btn-small btn-outline" id="nav-logout" style="display:none">Abmelden</button>
+    </nav>
 
     <main>
-        <section class="hero card">
-            <nav class="tabs" id="category-tabs">
-                <a href="#" class="tab active" data-cat="">Alle Angebote</a>
-                <a href="#" class="tab" data-cat="Kartenlegungen">Kartenlegungen</a>
-                <a href="#" class="tab" data-cat="Zauber">Zauber</a>
-                <a href="#" class="tab" data-cat="Rituale">Rituale</a>
-            </nav>
-        </section>
-
         <section class="section" id="popular-section" style="display:none">
             <h2>✨ Beliebte Artikel</h2>
             <div class="offer-grid" id="popular-grid"></div>

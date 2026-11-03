@@ -303,8 +303,8 @@
         const popularGrid = document.getElementById("popular-grid");
         if (!grid) return;
 
-        const activeTab = document.querySelector("#category-tabs .tab.active");
-        const cat = activeTab ? activeTab.getAttribute("data-cat") : "";
+        const activeTab = document.querySelector(".karmakiosk-navigation a.active");
+        const cat = activeTab ? (activeTab.getAttribute("data-cat") || "") : "";
         const all = offers().filter(function (o) { return o.active; });
         const list = cat ? all.filter(function (o) { return o.category === cat; }) : all;
 
@@ -318,13 +318,13 @@
     }
 
     function initIndex() {
-        const tabs = document.getElementById("category-tabs");
-        if (tabs) {
-            tabs.addEventListener("click", function (e) {
-                const a = e.target.closest(".tab");
+        const nav = document.querySelector(".karmakiosk-navigation");
+        if (nav) {
+            nav.addEventListener("click", function (e) {
+                const a = e.target.closest("a");
                 if (!a) return;
                 e.preventDefault();
-                tabs.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("active"); });
+                nav.querySelectorAll("a").forEach(function (t) { t.classList.remove("active"); });
                 a.classList.add("active");
                 renderIndex();
             });
