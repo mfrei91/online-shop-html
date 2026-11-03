@@ -231,3 +231,24 @@ form input[type="number"], form select, form textarea {
 .badge-red { background: #b03020; }
 .logo-link { color: inherit; text-decoration: none; }
 .logo-link:hover { text-decoration: underline; }
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(680px, calc(100% - 32px));
+    background: var(--card);
+    border: 1px solid #d9c29a;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -6px 24px rgba(0,0,0,.35);
+    padding: 14px 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.cookie-banner p { margin: 0; font-size: 13px; }
+.cookie-actions { display: flex; gap: 8px; }

@@ -9,7 +9,11 @@ Onlineshop für digitale Downloads (Kartenlegungen • Zauber • Rituale) als r
 - **Warenkorb (`warenkorb.html`):** Artikel mit Mengen-Steuerung, Summen und Gesamtsumme; live mit den Angeboten verknüpft (neue Angebote erscheinen sofort, entfernte/inaktive werden automatisch ausgeblendet)
 - **Zahlungsanbieter:** in der reinen HTML-Version nicht direkt angebunden – Schritt-für-Schritt-Anleitung in `docs/ZAHLUNGSANBIETER.md` (PayPal-Buttons, E-Mail/Überweisung, Stripe/Mollie mit Backend)
 - **Cheat Sheet Forgejo-Upload:** `docs/FORGEJO-CHEATSHEET.md`
-- **Impressum (`impressum.html`) & Datenschutz (`datenschutz.html`):** eigene Sektionen mit Mustertexten (vor Veröffentlichung ersetzen)
+- **Rechtstexte (Österreich/EU, Mustertexte – vor Veröffentlichung ersetzen und prüfen lassen):**
+  - `impressum.html` – Offenlegung gemäß § 5 ECG (Firmenbuch, UID, WKÖ, ODR-Plattform)
+  - `datenschutz.html` – DSGVO + österreichisches DSG, Beschwerderecht bei der Datenschutzbehörde (DSB)
+  - `agb.html` – Muster-AGB für digitale Downloads (FAGG-Rücktrittsrecht 14 Tage, Verlust bei Download-Zustimmung nach § 18 Abs. 1 Z 8 FAGG, Gewährleistung ABGB, österreichisches Recht, VKI-Schlichtung)
+  - `cookies.html` – Cookie- & Speicher-Richtlinie (keine Tracking-Cookies, localStorage-Zweckbindung, Lösch-Möglichkeit) **inkl. Cookie-Hinweis-Banner** auf allen Seiten
 - **Shop (`index.html`):** Angebote als Rechteck-Kacheln, Kategorien-Filter (Kartenlegungen, Zauber, Rituale), „Beliebte Artikel"
 - **Login (`login.html`) / Registrierung (`register.html`):** clientseitig simuliert, Daten liegen im `localStorage` des Browsers
   - **Passwort-Mindestanforderungen:** 12 Zeichen, mind. 1 Großbuchstabe, mind. 1 Sonderzeichen (bei Registrierung und Admin-Passwort-Reset)
