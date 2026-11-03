@@ -30,7 +30,7 @@
             total += line;
             return "<tr><td>" + Shop.escapeHtml(o.emoji) + " " + Shop.escapeHtml(o.title) + "</td>" +
                 "<td>" + Shop.escapeHtml(o.category) + "</td>" +
-                "<td>" + Shop.priceDisplay(unit) + "</td>" +
+                "<td>" + Shop.priceHtml(o) + "</td>" +
                 '<td class="qty-controls">' +
                 '<button class="btn btn-small" data-qty="' + o.id + '" data-delta="-1">−</button> ' +
                 "<strong>" + item.qty + "</strong> " +
