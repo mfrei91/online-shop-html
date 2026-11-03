@@ -12,7 +12,8 @@ Onlineshop für digitale Downloads (Kartenlegungen • Zauber • Rituale) als r
 - **Impressum (`impressum.html`) & Datenschutz (`datenschutz.html`):** eigene Sektionen mit Mustertexten (vor Veröffentlichung ersetzen)
 - **Shop (`index.html`):** Angebote als Rechteck-Kacheln, Kategorien-Filter (Kartenlegungen, Zauber, Rituale), „Beliebte Artikel"
 - **Login (`login.html`) / Registrierung (`register.html`):** clientseitig simuliert, Daten liegen im `localStorage` des Browsers
-  - Admin-Demo-Zugang: `admin` / `karmakiosk123`
+  - **Passwort-Mindestanforderungen:** 12 Zeichen, mind. 1 Großbuchstabe, mind. 1 Sonderzeichen (bei Registrierung und Admin-Passwort-Reset)
+  - **2FA (TOTP, RFC 6238):** im Admin-Bereich pro Benutzer einrichtbar; Login verlangt dann den 6-stelligen App-Code. Kompatibel mit Google Authenticator, Microsoft Authenticator, FreeOTP, Aegis und Authy (Standard-TOTP). Die Twilio-Authy-API selbst ist proprietär und ohne eigenes Backend nicht angebunden – Standard-TOTP ist die funktionsgleiche Alternative.
 - **Admin-Bereich (`admin.html`):** nur für die Rolle „admin" sichtbar
   - **Angebote:** hinzufügen, bearbeiten, entfernen, „beliebt" markieren, aktiv/inaktiv schalten
   - **Benutzer:** auflisten, Rollen (user/admin) ändern, löschen (Selbstschutz für das eigene Konto) und **Passwörter zurücksetzen** (keine Passwort-Anzeige; Admin vergibt ein neues Passwort)

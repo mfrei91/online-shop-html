@@ -11,17 +11,26 @@
 
     const loginForm = document.getElementById("login-form");
     if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
+        loginForm.addEventListener("submit", async function (e) {
             e.preventDefault();
-            const user = Shop.login(
+            const user = Shop.checkCredentials(
                 document.getElementById("username").value.trim(),
                 document.getElementById("password").value
             );
-            if (user) {
-                window.location.href = user.role === "admin" ? "admin.html" : "index.html";
-            } else {
+            if (!user) {
                 showError("login-error", "Benutzername oder Passwort ist falsch.");
+                return;
             }
+            if (user.twofa && user.totpSecret) {
+                const code = prompt("🔐 2FA: Bitte gib den 6-stelligen Code aus deiner Authenticator-App ein:");
+                const ok = code !== null && await Shop.verifyTotp(user.totpSecret, code);
+                if (!ok) {
+                    showError("login-error", "Der 2FA-Code ist falsch oder abgelaufen.");
+                    return;
+                }
+            }
+            Shop.createSession(user);
+            window.location.href = user.role === "admin" ? "admin.html" : "index.html";
         });
     }
 
@@ -32,8 +41,9 @@
             const username = document.getElementById("username").value.trim();
             const email = document.getElementById("email").value.trim().toLowerCase();
             const password = document.getElementById("password").value;
-            if (password.length < 6) {
-                showError("register-error", "Das Passwort muss min. 6 Zeichen haben.");
+            const pwError = Shop.validatePassword(password);
+            if (pwError) {
+                showError("register-error", pwError);
                 return;
             }
             const result = Shop.register(username, email, password);

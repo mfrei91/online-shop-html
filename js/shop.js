@@ -38,6 +38,78 @@
         return "k" + h.toString(16);
     }
 
+    function validatePassword(pw) {
+        if (!pw || pw.length < 12) return "Das Passwort muss mindestens 12 Zeichen haben.";
+        if (!/[A-Z]/.test(pw)) return "Das Passwort muss mindestens 1 Großbuchstaben enthalten.";
+        if (!/[^A-Za-z0-9]/.test(pw)) return "Das Passwort muss mindestens 1 Sonderzeichen enthalten (z. B. ! ? # $ %).";
+        return null;
+    }
+
+    function effectivePrice(offer) {
+        const d = Math.max(0, Math.min(100, Number(offer.discount) || 0));
+        if (d <= 0) return offer.price;
+        return Math.round(offer.price * (100 - d)) / 100;
+    }
+
+    const B32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+    function base32Decode(str) {
+        const clean = String(str).toUpperCase().replace(/[^A-Z2-7]/g, "");
+        let bits = "";
+        for (let i = 0; i < clean.length; i++) {
+            bits += B32.indexOf(clean[i]).toString(2).padStart(5, "0");
+        }
+        const out = [];
+        for (let i = 0; i + 8 <= bits.length; i += 8) {
+            out.push(parseInt(bits.substr(i, 8), 2));
+        }
+        return new Uint8Array(out);
+    }
+
+    function base32Encode(bytes) {
+        let bits = "";
+        for (let i = 0; i < bytes.length; i++) {
+            bits += bytes[i].toString(2).padStart(8, "0");
+        }
+        let out = "";
+        for (let i = 0; i + 5 <= bits.length; i += 5) {
+            out += B32[parseInt(bits.substr(i, 5), 2)];
+        }
+        return out;
+    }
+
+    function generateTotpSecret() {
+        const bytes = new Uint8Array(20);
+        crypto.getRandomValues(bytes);
+        return base32Encode(bytes);
+    }
+
+    async function totpCode(secret, stepOffset) {
+        const step = Math.floor(Date.now() / 30000) + (stepOffset || 0);
+        const msg = new Uint8Array(8);
+        let c = step;
+        for (let i = 7; i >= 0; i--) {
+            msg[i] = c & 0xff;
+            c = Math.floor(c / 256);
+        }
+        const key = await crypto.subtle.importKey(
+            "raw", base32Decode(secret), { name: "HMAC", hash: "SHA-1" }, false, ["sign"]
+        );
+        const sig = new Uint8Array(await crypto.subtle.sign("HMAC", key, msg));
+        const off = sig[sig.length - 1] & 0x0f;
+        const bin = ((sig[off] & 0x7f) << 24) | (sig[off + 1] << 16) | (sig[off + 2] << 8) | sig[off + 3];
+        return String(bin % 1000000).padStart(6, "0");
+    }
+
+    async function verifyTotp(secret, code) {
+        const entered = String(code).replace(/[\s-]/g, "");
+        if (!/^\d{6}$/.test(entered)) return false;
+        for (const w of [0, -1, 1]) {
+            if (await totpCode(secret, w) === entered) return true;
+        }
+        return false;
+    }
+
     function seed() {
         if (!localStorage.getItem(LS_USERS)) {
             write(LS_USERS, [
@@ -134,10 +206,20 @@
         });
     }
 
-    function login(username, password) {
+    function checkCredentials(username, password) {
         const user = users().find(function (u) { return u.username === username; });
         if (!user || user.password !== hashPassword(password)) return null;
+        return user;
+    }
+
+    function createSession(user) {
         write(LS_SESSION, { id: user.id, username: user.username });
+    }
+
+    function login(username, password) {
+        const user = checkCredentials(username, password);
+        if (!user) return null;
+        createSession(user);
         return user;
     }
 
@@ -185,6 +267,17 @@
         }
     }
 
+    function priceHtml(offer) {
+        const discount = Math.max(0, Math.min(100, Number(offer.discount) || 0));
+        if (discount > 0) {
+            return '<div class="price-block">' +
+                '<span class="discount-line">-' + discount + '% <s>' + priceDisplay(offer.price) + "</s></span>" +
+                '<span class="price">' + priceDisplay(effectivePrice(offer)) + "</span>" +
+                "</div>";
+        }
+        return '<span class="price">' + priceDisplay(effectivePrice(offer)) + "</span>";
+    }
+
     function offerCard(offer) {
         const imageHtml = offer.image
             ? '<div class="offer-image"><img src="' + offer.image + '" alt="' + escapeHtml(offer.title) + '"></div>'
@@ -196,7 +289,7 @@
             "<h3>" + escapeHtml(offer.title) + "</h3>" +
             "<p>" + escapeHtml(offer.description) + "</p>" +
             '<div class="offer-footer">' +
-            '<span class="price">' + priceDisplay(offer.price) + "</span>" +
+            priceHtml(offer) +
             '<button class="btn btn-small" data-add="' + offer.id + '">In den Warenkorb 🧺</button>' +
             "</div></div></article>";
     }
@@ -257,9 +350,16 @@
         saveUsers: saveUsers,
         currentUser: currentUser,
         login: login,
+        checkCredentials: checkCredentials,
+        createSession: createSession,
         register: register,
         logout: logout,
         hashPassword: hashPassword,
+        validatePassword: validatePassword,
+        effectivePrice: effectivePrice,
+        priceHtml: priceHtml,
+        generateTotpSecret: generateTotpSecret,
+        verifyTotp: verifyTotp,
         cart: cart,
         addToCart: addToCart,
         setCartQty: setCartQty,

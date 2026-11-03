@@ -25,11 +25,12 @@
         let total = 0;
         tbody.innerHTML = items.map(function (item) {
             const o = item.offer;
-            const line = o.price * item.qty;
+            const unit = Shop.effectivePrice(o);
+            const line = unit * item.qty;
             total += line;
             return "<tr><td>" + Shop.escapeHtml(o.emoji) + " " + Shop.escapeHtml(o.title) + "</td>" +
                 "<td>" + Shop.escapeHtml(o.category) + "</td>" +
-                "<td>" + Shop.priceDisplay(o.price) + "</td>" +
+                "<td>" + Shop.priceDisplay(unit) + "</td>" +
                 '<td class="qty-controls">' +
                 '<button class="btn btn-small" data-qty="' + o.id + '" data-delta="-1">−</button> ' +
                 "<strong>" + item.qty + "</strong> " +

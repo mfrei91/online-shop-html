@@ -59,7 +59,7 @@
                 (o.popular ? ' <span class="badge badge-orange">beliebt</span>' : "");
             return "<tr><td>" + Shop.escapeHtml(o.emoji) + " " + Shop.escapeHtml(o.title) + (o.image ? " 🖼️" : "") + "</td>" +
                 "<td>" + Shop.escapeHtml(o.category) + "</td>" +
-                "<td>" + Shop.priceDisplay(o.price) + "</td>" +
+                "<td>" + (o.discount ? '<span class="badge badge-red">-' + Math.max(0, Math.min(100, Number(o.discount) || 0)) + '%</span> ' : "") + Shop.priceDisplay(Shop.effectivePrice(o)) + "</td>" +
                 "<td>" + status + "</td>" +
                 '<td class="actions"><button class="btn btn-small" data-edit="' + o.id + '">Bearbeiten</button></td></tr>';
         }).join("");
@@ -80,13 +80,16 @@
                 ? '<button class="btn btn-small" disabled title="Du kannst dir nicht selbst die Admin-Rolle entziehen">Rolle</button>'
                 : '<button class="btn btn-small" data-role="' + u.id + '">' + (u.role === "admin" ? "Zu Benutzer" : "Zu Admin") + "</button>";
             const resetBtn = '<button class="btn btn-small" data-resetpw="' + u.id + '">🔑 Passwort zurücksetzen</button>';
+            const twofaBtn = u.twofa
+                ? '<button class="btn btn-small" data-2faoff="' + u.id + '">🔓 2FA deaktivieren</button>'
+                : '<button class="btn btn-small" data-2faon="' + u.id + '">🔐 2FA einrichten</button>';
             const delBtn = self
                 ? '<button class="btn btn-small btn-danger" disabled title="Du kannst dein eigenes Konto nicht löschen">Löschen</button>'
                 : '<button class="btn btn-small btn-danger" data-del="' + u.id + '">Löschen</button>';
             return "<tr><td>" + Shop.escapeHtml(u.username) + "</td>" +
                 "<td>" + Shop.escapeHtml(u.email) + "</td>" +
                 "<td>" + role + "</td>" +
-                '<td class="actions">' + roleBtn + resetBtn + delBtn + "</td></tr>";
+                '<td class="actions">' + roleBtn + resetBtn + twofaBtn + delBtn + "</td></tr>";
         }).join("");
         tbody.innerHTML = rows;
         tbody.querySelectorAll("[data-role]").forEach(function (btn) {
@@ -107,15 +110,52 @@
                 const list = Shop.users();
                 const u = list.find(function (x) { return x.id === id; });
                 if (!u) return;
-                const pw = prompt("Neues Passwort für „" + u.username + "“ (min. 6 Zeichen):");
+                const pw = prompt("Neues Passwort für „" + u.username + "“ (min. 12 Zeichen, mind. 1 Großbuchstabe, mind. 1 Sonderzeichen):");
                 if (pw === null) return;
-                if (pw.length < 6) {
-                    alert("Das Passwort muss mindestens 6 Zeichen haben.");
+                const pwError = Shop.validatePassword(pw);
+                if (pwError) {
+                    alert(pwError);
                     return;
                 }
                 u.password = Shop.hashPassword(pw);
                 Shop.saveUsers(list);
                 alert("✅ Passwort für „" + u.username + "“ wurde zurückgesetzt.");
+            });
+        });
+        tbody.querySelectorAll("[data-2faon]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                const id = parseInt(btn.getAttribute("data-2faon"), 10);
+                const list = Shop.users();
+                const u = list.find(function (x) { return x.id === id; });
+                if (!u) return;
+                const secret = Shop.generateTotpSecret();
+                u.twofa = true;
+                u.totpSecret = secret;
+                Shop.saveUsers(list);
+                const uri = "otpauth://totp/KarmaKiosk:" + encodeURIComponent(u.username) +
+                    "?secret=" + secret + "&issuer=KarmaKiosk&digits=6&period=30";
+                alert(
+                    "🔐 2FA für „" + u.username + "“ wurde aktiviert.\n\n" +
+                    "Geheimnis (Base32):\n" + secret + "\n\n" +
+                    "In der Authenticator-App als \"anderes Konto / manuell\" hinzufügen\n" +
+                    "oder diese URI öffnen:\n" + uri + "\n\n" +
+                    "Kompatibel mit Google Authenticator, Microsoft Authenticator,\n" +
+                    "FreeOTP, Aegis und Authy (Standard-TOTP)."
+                );
+                renderUsers();
+            });
+        });
+        tbody.querySelectorAll("[data-2faoff]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                const id = parseInt(btn.getAttribute("data-2faoff"), 10);
+                const list = Shop.users();
+                const u = list.find(function (x) { return x.id === id; });
+                if (!u) return;
+                if (!confirm("2FA für „" + u.username + "“ wirklich deaktivieren?")) return;
+                u.twofa = false;
+                u.totpSecret = null;
+                Shop.saveUsers(list);
+                renderUsers();
             });
         });
         tbody.querySelectorAll("[data-del]").forEach(function (btn) {
@@ -138,6 +178,7 @@
         document.getElementById("offer-delete").style.display = "none";
         document.getElementById("offer-form-title").textContent = "Neues Angebot";
         document.getElementById("offer-emoji").value = "🔮";
+        document.getElementById("offer-discount").value = 0;
         document.getElementById("offer-active").checked = true;
         currentImage = null;
         showImagePreview(null);
@@ -150,6 +191,7 @@
             document.getElementById("offer-title").value = o.title;
             document.getElementById("offer-description").value = o.description;
             document.getElementById("offer-price").value = o.price.toFixed(2).replace(".", ",");
+            document.getElementById("offer-discount").value = Math.max(0, Math.min(100, Number(o.discount) || 0));
             document.getElementById("offer-category").value = o.category;
             document.getElementById("offer-emoji").value = o.emoji;
             document.getElementById("offer-popular").checked = o.popular;
@@ -187,6 +229,7 @@
             category: document.getElementById("offer-category").value,
             emoji: document.getElementById("offer-emoji").value.trim() || "🔮",
             popular: document.getElementById("offer-popular").checked,
+            discount: Math.max(0, Math.min(100, parseInt(document.getElementById("offer-discount").value, 10) || 0)),
             active: document.getElementById("offer-active").checked,
             image: currentImage
         };
