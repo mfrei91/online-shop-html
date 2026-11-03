@@ -58,12 +58,12 @@ main { display: block; }
     border: 1px solid #e5d5bb;
 }
 
-.hero { margin-top: 24px; padding: 22px 28px; }
+.hero { margin-top: 24px; padding: 22px 28px; text-align: center; }
 
 .rating { color: var(--accent-dark); font-size: 15px; margin-bottom: 14px; }
 .stars { color: #f0a929; letter-spacing: 2px; }
 
-.tabs { display: flex; flex-wrap: wrap; gap: 10px; }
+.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .tab {
     padding: 8px 18px;
     border-radius: 999px;
