@@ -197,7 +197,7 @@
     }
 
     function cartCount() {
-        return read(LS_CART, []).reduce(function (sum, e) { return sum + e.qty; }, 0);
+        return cart().reduce(function (sum, e) { return sum + e.qty; }, 0);
     }
 
     function updateCartCounts() {
