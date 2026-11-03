@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmelden – KarmaKiosk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wood-bg">
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-moon">🌙</span>
+                <div>
+                    <h1>KarmaKiosk</h1>
+                    <p class="tagline">Digitale Downloads für deine spirituelle Reise</p>
+                </div>
+            </div>
+            <nav class="user-nav">
+                <a class="btn btn-small" href="index.html">← Zum Shop</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="auth-card card">
+            <h2>🔐 Anmelden</h2>
+            <p class="flash flash-error" id="login-error" style="display:none"></p>
+            <form id="login-form">
+                <label for="username">Benutzername</label>
+                <input type="text" id="username" required autofocus>
+                <label for="password">Passwort</label>
+                <input type="password" id="password" required>
+                <button type="submit" class="btn">Anmelden</button>
+            </form>
+            <p class="auth-hint">Noch kein Konto? <a href="register.html">Jetzt registrieren</a></p>
+            <p class="auth-hint">Admin-Demo: <code>admin</code> / <code>karmakiosk123</code></p>
+        </section>
+    </main>
+</div>
+<script src="js/shop.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

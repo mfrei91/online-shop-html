@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KarmaKiosk – Digitale Downloads für deine spirituelle Reise</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wood-bg">
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-moon">🌙</span>
+                <div>
+                    <h1>KarmaKiosk</h1>
+                    <p class="tagline">Digitale Downloads für deine spirituelle Reise</p>
+                </div>
+            </div>
+            <nav class="user-nav">
+                <a class="btn btn-small" href="login.html" id="nav-login">Anmelden</a>
+                <a class="btn btn-small btn-outline" href="register.html" id="nav-register">Registrieren</a>
+                <a class="btn btn-small" href="admin.html" id="nav-admin" style="display:none">⚙️ Admin</a>
+                <span class="user-badge" id="nav-user" style="display:none"></span>
+                <button class="btn btn-small btn-outline" id="nav-logout" style="display:none">Abmelden</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero card">
+            <div class="rating"><span class="stars">★★★★★</span> <strong>4,9</strong> · 328 Bewertungen</div>
+            <nav class="tabs" id="category-tabs">
+                <a href="#" class="tab active" data-cat="">Alle Angebote</a>
+                <a href="#" class="tab" data-cat="Kartenlegungen">Kartenlegungen</a>
+                <a href="#" class="tab" data-cat="Zauber">Zauber</a>
+                <a href="#" class="tab" data-cat="Rituale">Rituale</a>
+            </nav>
+        </section>
+
+        <section class="section" id="popular-section" style="display:none">
+            <h2>✨ Beliebte Artikel</h2>
+            <div class="offer-grid" id="popular-grid"></div>
+        </section>
+
+        <section class="section">
+            <h2 id="offer-heading">Alle Angebote</h2>
+            <div class="offer-grid" id="offer-grid"></div>
+            <p class="empty" id="offer-empty" style="display:none">In dieser Kategorie gibt es noch keine Angebote. 🌱</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>🌙 KarmaKiosk · Kartenlegungen • Zauber • Rituale · Bewusstsein beginnt mit einem Klick</p>
+    </footer>
+</div>
+<script src="js/shop.js"></script>
+</body>
+</html>
