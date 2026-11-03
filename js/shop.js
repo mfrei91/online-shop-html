@@ -254,6 +254,10 @@
         const navUser = document.getElementById("nav-user");
         const navLogout = document.getElementById("nav-logout");
         if (!navLogin) return;
+        if (navLogout && !navLogout.dataset.bound) {
+            navLogout.dataset.bound = "1";
+            navLogout.addEventListener("click", logout);
+        }
         if (user) {
             navLogin.style.display = "none";
             navRegister.style.display = "none";
